@@ -1,7 +1,9 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { useWatchlist } from './hooks';
 import type { Stock } from './types';
+import { ReduxDemo } from './demos/ReduxDemo';
+import { ZustandDemo } from './demos/ZustandDemo';
 
 
 function App() {
@@ -169,6 +171,27 @@ function App() {
             </table>
           </div>
         </div>
+
+        {/* Redux vs Zustand – simple counter demos */}
+        <section className="mt-8">
+          <h2 className="mb-4 text-xl font-semibold text-slate-200">
+            State libraries demo (counter)
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-violet-400">
+                Redux (RTK)
+              </h3>
+              <ReduxDemo />
+            </div>
+            <div>
+              <h3 className="mb-2 text-sm font-medium uppercase tracking-wider text-amber-400">
+                Zustand
+              </h3>
+              <ZustandDemo />
+            </div>
+          </div>
+        </section>
       </div>
 
 
