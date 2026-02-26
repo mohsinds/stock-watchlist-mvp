@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const reduxCounterSlice = createSlice({
   name: "reduxCounter",
-  initialState: { value: 0 },
+  initialState: { value: 0},
   reducers: {
     increment: (state) => {
       state.value += 1;

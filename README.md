@@ -1,73 +1,80 @@
-# React + TypeScript + Vite
+# Stock Watchlist MVP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React app for managing a stock watchlist, built with **React 19**, **TypeScript**, and **Vite**. It demonstrates several state-management approaches: React Context + reducer (main watchlist), **Redux (RTK)**, and **Zustand** via simple counter demos.
 
-Currently, two official plugins are available:
+## Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** + **TypeScript**
+- **Vite** – build and dev server
+- **Tailwind CSS** – styling
+- **Redux Toolkit** + **react-redux** – Redux demo
+- **Zustand** – Zustand demo
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open [http://localhost:5173](http://localhost:5173). Build and lint:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run lint
 ```
+
+## Project structure
+
+```
+src/
+├── App.tsx           # Main UI: watchlist table, add/remove, delay control, state demos
+├── main.tsx           # Entry: renders App inside WatchlistProvider
+├── context.tsx        # Watchlist state: React Context + useReducer
+├── hooks.ts           # useWatchlist() – consumes WatchlistContext
+├── types.ts           # Stock, WatchlistContextType
+├── enum.ts            # WatchlistActionTypes (ADD, REMOVE, LOADING, etc.)
+├── demos/             # Redux and Zustand counter demos (for learning)
+│   ├── ReduxDemo.tsx
+│   ├── reduxCounterSlice.ts
+│   ├── reduxStore.ts
+│   ├── ZustandDemo.tsx
+│   └── ZustandCounterStore.ts
+├── App.css
+└── index.css
+```
+
+## How state is managed
+
+### Watchlist (main feature)
+
+- **Context + reducer** in `context.tsx`:
+  - `WatchlistProvider` wraps the app in `main.tsx`.
+  - State: `stocks[]`, `loading`, `error`, `fakeDelay`.
+  - Actions: `ADD`, `REMOVE`, `LOADING`, `UPDATE_FAKE_DELAY`.
+  - Components use `useWatchlist()` from `hooks.ts` to read state and call `addStock`, `removeStock`, `updateFakeDelay`.
+- Add/remove use a configurable **fake delay** (ms) to simulate async work; the delay is stored in context and can be changed via the input in the UI.
+
+### Redux and Zustand demos
+
+At the bottom of the app, two small **counter** demos run side by side:
+
+- **Redux (RTK):** slice in `reduxCounterSlice.ts`, store in `reduxStore.ts`, `<Provider>` in `ReduxDemo.tsx`. Components use `useSelector` and `useDispatch`.
+- **Zustand:** single store in `ZustandCounterStore.ts`, no provider. Components use `useZustandCounterStore(selector)`.
+
+Same behavior (increment, decrement, add by 5) so you can compare patterns.
+
+## Scripts
+
+| Command        | Description              |
+|----------------|--------------------------|
+| `npm run dev`  | Start Vite dev server    |
+| `npm run build`| Type-check + production build |
+| `npm run lint` | Run ESLint               |
+| `npm run preview` | Preview production build |
+
+---
+
+## Vite + React template notes
+
+This project was bootstrapped with the React + TypeScript + Vite template. The [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) plugin enables Fast Refresh. For stricter ESLint type-aware rules, see the [TypeScript ESLint docs](https://typescript-eslint.io/).
