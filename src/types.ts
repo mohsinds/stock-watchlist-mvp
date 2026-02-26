@@ -8,8 +8,10 @@ export interface Stock {
 }
 export interface WatchlistContextType {
     stocks: Stock[];
-    addStock: (symbol: string) => Promise<void>;
-    removeStock: (symbol: string) => void;
+    addStock: (stock: Stock) => Promise<void>;
+    removeStock: (id: string) => void;
     loading: boolean;
     error: string | null;
+    fakeDelay: number;
+    updateFakeDelay: (delay: number) => void;
 }
